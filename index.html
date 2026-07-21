@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - الرئيسية</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">💪</span>
+                <span class="logo-text">FitTrack</span>
+            </div>
+            
+            <button class="nav-toggle" id="navToggle" aria-label="القائمة">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="active">الرئيسية | Home</a></li>
+                <li><a href="workouts.html">التمارين | Workouts</a></li>
+                <li><a href="add-goal.html">إضافة هدف | Add Goal</a></li>
+                <li><a href="manage.html">إدارة الأهداف | Manage</a></li>
+                <li><a href="contact.html">تواصل | Contact</a></li>
+                <li><a href="#" id="logoutBtn">تسجيل خروج | Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <main>
+        <!-- قسم الترحيب -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">مرحباً بك في FitTrack</h1>
+                <p class="hero-subtitle">رحلة اللياقة البدنية تبدأ من هنا</p>
+                <p class="hero-description">
+                    تتبع تمارينك، حقق أهدافك، وعش حياة صحية أكثر مع FitTrack
+                </p>
+                <div class="hero-buttons">
+                    <a href="workouts.html" class="btn btn-primary">استكشف التمارين</a>
+                    <a href="add-goal.html" class="btn btn-secondary">أضف هدفك الآن</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <span class="hero-emoji">🏋️‍♂️</span>
+            </div>
+        </section>
+
+        <!-- قسم الإحصائيات -->
+        <section class="stats-section">
+            <div class="container">
+                <h2 class="section-title">إحصائيات FitTrack</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">💪</div>
+                        <div class="stat-number" id="workoutCount">0</div>
+                        <div class="stat-label">تمارين | Workouts</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-number" id="userCount">0</div>
+                        <div class="stat-label">مستخدمين | Users</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-number" id="goalCount">0</div>
+                        <div class="stat-label">أهداف صحية | Goals</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-number" id="caloriesCount">0</div>
+                        <div class="stat-label">سعرات محروقة | Calories</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم المميزات -->
+        <section class="features-section">
+            <div class="container">
+                <h2 class="section-title">مميزات FitTrack</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📋</div>
+                        <h3>خطط تمارين مخصصة</h3>
+                        <p>اختر من بين مجموعة متنوعة من خطط التمارين المناسبة لمستوى لياقتك</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3>تتبع الأهداف</h3>
+                        <p>حدد أهدافك الصحية وتابع تقدمك نحو تحقيقها بسهولة</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>إحصائيات دقيقة</h3>
+                        <p>احصل على تقارير مفصلة عن تقدمك ونتائج تمارينك</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔄</div>
+                        <h3>تحديثات فورية</h3>
+                        <p>احفظ بياناتك وتابع تطورك في الوقت الفعلي</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم التمارين السريعة -->
+        <section class="quick-workouts">
+            <div class="container">
+                <h2 class="section-title">أفضل التمارين</h2>
+                <div class="quick-workouts-grid" id="quickWorkouts">
+                    <!-- سيتم عرض التمارين عبر JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- تذييل الصفحة -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>💪 FitTrack</h4>
+                <p>موقع إلكتروني لتتبع اللياقة البدنية ونمط الحياة الصحي</p>
+                <p>Fitness Tracking & Healthy Lifestyle Website</p>
+            </div>
+            <div class="footer-section">
+                <h4>روابط سريعة</h4>
+                <ul>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="workouts.html">التمارين</a></li>
+                    <li><a href="add-goal.html">إضافة هدف</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>تواصل معنا</h4>
+                <p>📧 tasneem987654@gmail.com</p>
+                <p>📱 0121426307</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 FitTrack. جميع الحقوق محفوظة | All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

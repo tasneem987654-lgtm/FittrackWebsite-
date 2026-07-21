@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - تواصل معنا</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">💪</span>
+                <span class="logo-text">FitTrack</span>
+            </div>
+            
+            <button class="nav-toggle" id="navToggle" aria-label="القائمة">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">الرئيسية | Home</a></li>
+                <li><a href="workouts.html">التمارين | Workouts</a></li>
+                <li><a href="add-goal.html">إضافة هدف | Add Goal</a></li>
+                <li><a href="manage.html">إدارة الأهداف | Manage</a></li>
+                <li><a href="contact.html" class="active">تواصل | Contact</a></li>
+                <li><a href="#" id="logoutBtn">تسجيل خروج | Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- المحتوى الرئيسي -->
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>تواصل معنا | Contact Us</h1>
+                <p>نحن هنا لمساعدتك في رحلة اللياقة الخاصة بك</p>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="container">
+                <div class="contact-grid">
+                    <!-- معلومات التواصل -->
+                    <div class="contact-info">
+                        <div class="info-card">
+                            <h3>📋 عن FitTrack</h3>
+                            <p>FitTrack هو منصة متكاملة لتتبع اللياقة البدنية ونمط الحياة الصحي. نساعدك على تحقيق أهدافك الصحية من خلال تخطيط التمارين وتتبع التقدم.</p>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>👨‍💻 المطور</h3>
+                            <p>تم تطوير هذا المشروع باستخدام تقنيات الويب الأساسية:</p>
+                            <ul>
+                                <li>✅ HTML5</li>
+                                <li>✅ CSS3</li>
+                                <li>✅ JavaScript (Vanilla JS)</li>
+                                <li>✅ Local Storage</li>
+                            </ul>
+                        </div>
+
+                        <div class="info-card">
+                            <h3>📞 معلومات التواصل</h3>
+                            <p>📧 البريد الإلكتروني:  tasneem987654@gmail.com</p>
+                            <p>📱 الهاتف: 0121426307</p>
+                            <p>📍 الموقع: مدني ، السودان</p>
+                        </div>
+                    </div>
+
+                    <!-- نموذج التواصل -->
+                    <div class="contact-form-container">
+                        <h3>أرسل رسالة | Send a Message</h3>
+                        <form id="contactForm" class="contact-form">
+                            <div class="form-group">
+                                <label for="contactName">الاسم | Name</label>
+                                <input type="text" id="contactName" placeholder="أدخل اسمك" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactEmail">البريد الإلكتروني | Email</label>
+                                <input type="email" id="contactEmail" placeholder="example@email.com" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactPhone">رقم الهاتف | Phone</label>
+                                <input type="tel" id="contactPhone" placeholder="+249xxxxxxxxx" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactMessage">الرسالة | Message</label>
+                                <textarea id="contactMessage" rows="5" placeholder="اكتب رسالتك هنا..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">📨 إرسال الرسالة | Send Message</button>
+                        </form>
+                        <div id="contactMessageAlert" class="form-message"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- تذييل الصفحة -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>💪 FitTrack</h4>
+                <p>موقع إلكتروني لتتبع اللياقة البدنية ونمط الحياة الصحي</p>
+            </div>
+            <div class="footer-section">
+                <h4>روابط سريعة</h4>
+                <ul>
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="workouts.html">التمارين</a></li>
+                    <li><a href="add-goal.html">إضافة هدف</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>تواصل معنا</h4>
+                <p>📧  tasneem987654@gmail.com</p>
+                <p>📱 0121426307</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 FitTrack. جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

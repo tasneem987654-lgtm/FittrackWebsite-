@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - تسجيل الدخول</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- صفحة تسجيل الدخول -->
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-logo">
+                <span class="logo-icon">💪</span>
+                <h1>FitTrack</h1>
+            </div>
+            
+            <h2 class="login-subtitle">موقع إلكتروني لتتبع اللياقة البدنية ونمط الحياة الصحي</h2>
+            <p class="login-subtitle-en">Fitness Tracking & Healthy Lifestyle Website</p>
+            
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username">اسم المستخدم | Username</label>
+                    <input type="text" id="username" name="username" placeholder="أدخل اسم المستخدم" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">كلمة المرور | Password</label>
+                    <input type="password" id="password" name="password" placeholder="أدخل كلمة المرور" required>
+                </div>
+                
+                <div id="errorMessage" class="error-message"></div>
+                
+                <div class="login-buttons">
+                    <button type="submit" class="btn btn-primary">تسجيل الدخول | Login</button>
+                    <button type="reset" class="btn btn-secondary">إعادة تعيين | Reset</button>
+                </div>
+            </form>
+            
+            <div class="login-help">
+                <p>المستخدم التجريبي: <strong>admin</strong></p>
+                <p>كلمة المرور: <strong>admin123</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
