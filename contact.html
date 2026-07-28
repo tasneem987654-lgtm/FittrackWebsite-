@@ -34,6 +34,16 @@
 
     <!-- المحتوى الرئيسي -->
     <main>
+        <!-- ✅ قسم الترحيب -->
+        <div class="welcome-message" style="background: #2E8B57; color: white; padding: 25px 20px; text-align: center; margin: 0;">
+            <h2 id="welcomeText" style="margin: 0; font-size: 1.8rem; font-weight: 700;">
+                👋 مرحباً بك في صفحة التواصل
+            </h2>
+            <p id="userInfo" style="margin: 8px 0 0 0; opacity: 0.9; font-size: 1.1rem;">
+                نرحب بكم في صفحة التواصل مع فريق FitTrack
+            </p>
+        </div>
+
         <section class="page-header">
             <div class="container">
                 <h1>تواصل معنا | Contact Us</h1>
@@ -64,34 +74,34 @@
 
                         <div class="info-card">
                             <h3>📞 معلومات التواصل</h3>
-                            <p>📧 البريد الإلكتروني:  tasneem987654@gmail.com</p>
+                            <p>📧 البريد الإلكتروني: tasneem987654@gmail.com</p>
                             <p>📱 الهاتف: 0121426307</p>
-                            <p>📍 الموقع: مدني ، السودان</p>
+                            <p>📍 الموقع: مدني، السودان</p>
                         </div>
                     </div>
 
                     <!-- نموذج التواصل -->
                     <div class="contact-form-container">
                         <h3>أرسل رسالة | Send a Message</h3>
-                        <form id="contactForm" class="contact-form">
+                        <form id="contactForm" class="contact-form" action="php/contact.php" method="POST">
                             <div class="form-group">
                                 <label for="contactName">الاسم | Name</label>
-                                <input type="text" id="contactName" placeholder="أدخل اسمك" required>
+                                <input type="text" id="contactName" name="name" placeholder="أدخل اسمك" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="contactEmail">البريد الإلكتروني | Email</label>
-                                <input type="email" id="contactEmail" placeholder="example@email.com" required>
+                                <input type="email" id="contactEmail" name="email" placeholder="example@email.com" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="contactPhone">رقم الهاتف | Phone</label>
-                                <input type="tel" id="contactPhone" placeholder="+249xxxxxxxxx" required>
+                                <input type="tel" id="contactPhone" name="phone" placeholder="+249xxxxxxxxx" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="contactMessage">الرسالة | Message</label>
-                                <textarea id="contactMessage" rows="5" placeholder="اكتب رسالتك هنا..." required></textarea>
+                                <textarea id="contactMessage" name="message" rows="5" placeholder="اكتب رسالتك هنا..." required></textarea>
                             </div>
 
                             <button type="submit" class="btn btn-primary">📨 إرسال الرسالة | Send Message</button>
@@ -120,7 +130,7 @@
             </div>
             <div class="footer-section">
                 <h4>تواصل معنا</h4>
-                <p>📧  tasneem987654@gmail.com</p>
+                <p>📧 tasneem987654@gmail.com</p>
                 <p>📱 0121426307</p>
             </div>
         </div>
@@ -130,5 +140,24 @@
     </footer>
 
     <script src="js/script.js"></script>
+    
+    <!-- ✅ كود الترحيب وجلب بيانات المستخدم -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = localStorage.getItem('fitTrackUser');
+            const welcomeText = document.getElementById('welcomeText');
+            const userInfo = document.getElementById('userInfo');
+            
+            if (user) {
+                const userData = JSON.parse(user);
+                if (welcomeText) {
+                    welcomeText.innerHTML = `👋 مرحباً بك، ${userData.fullName || 'صديقنا'}`;
+                }
+                if (userInfo) {
+                    userInfo.innerHTML = `📧 ${userData.email || ''} | نرحب بكم في صفحة التواصل مع فريق FitTrack`;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
