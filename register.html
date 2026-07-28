@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - إنشاء حساب</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- صفحة إنشاء حساب جديد -->
+    <div class="register-container">
+        <div class="register-card">
+            <div class="register-logo">
+                <span class="logo-icon">💪</span>
+                <h1>FitTrack</h1>
+            </div>
+            
+            <h2 class="register-subtitle">إنشاء حساب جديد</h2>
+            <p class="register-subtitle-en">Create New Account</p>
+            
+            <form id="registerForm" class="register-form" action="php/register.php" method="POST">
+                <!-- الاسم الكامل -->
+                <div class="form-group">
+                    <label for="fullName">الاسم الكامل | Full Name</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="أدخل الاسم الكامل" required>
+                </div>
+
+                <!-- اسم المستخدم -->
+                <div class="form-group">
+                    <label for="regUsername">اسم المستخدم | Username</label>
+                    <input type="text" id="regUsername" name="regUsername" placeholder="أدخل اسم المستخدم" required>
+                    <small class="form-hint">يجب أن يكون فريداً ولا يحتوي على مسافات</small>
+                </div>
+
+                <!-- البريد الإلكتروني -->
+                <div class="form-group">
+                    <label for="regEmail">البريد الإلكتروني | Email</label>
+                    <input type="email" id="regEmail" name="regEmail" placeholder="example@email.com" required>
+                </div>
+
+                <!-- كلمة المرور -->
+                <div class="form-group">
+                    <label for="regPassword">كلمة المرور | Password</label>
+                    <input type="password" id="regPassword" name="regPassword" placeholder="أدخل كلمة المرور" required>
+                    <small class="form-hint">يجب أن تحتوي على 6 أحرف على الأقل</small>
+                </div>
+
+                <!-- تأكيد كلمة المرور -->
+                <div class="form-group">
+                    <label for="confirmPassword">تأكيد كلمة المرور | Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="أعد إدخال كلمة المرور" required>
+                </div>
+
+                <!-- حقل الموافقة على الشروط -->
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="agreeTerms" required>
+                        <span>أوافق على <a href="#" id="termsLink">الشروط والأحكام</a> | I agree to the <a href="#" id="termsLinkEn">Terms & Conditions</a></span>
+                    </label>
+                </div>
+
+                <div id="registerError" class="error-message"></div>
+                
+                <div class="register-buttons">
+                    <button type="submit" class="btn btn-primary">إنشاء حساب | Register</button>
+                    <button type="reset" class="btn btn-secondary">إعادة تعيين | Reset</button>
+                </div>
+            </form>
+            
+            <div class="register-footer">
+                <p>لديك حساب بالفعل؟ | Already have an account?</p>
+                <a href="login.html" class="btn btn-link">تسجيل الدخول | Login</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة عرض الشروط والأحكام (Modal) -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📋 الشروط والأحكام</h2>
+                <span class="modal-close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <h3>Terms &amp; Conditions</h3>
+                <p><strong>آخر تحديث:</strong> 1 يناير 2026</p>
+                
+                <h4>1. قبول الشروط</h4>
+                <p>باستخدامك لموقع FitTrack، فإنك توافق على الالتزام بهذه الشروط والأحكام. إذا كنت لا توافق على أي جزء من هذه الشروط، يرجى عدم استخدام الموقع.</p>
+                
+                <h4>2. الحساب والأمان</h4>
+                <p>أنت مسؤول عن الحفاظ على سرية معلومات حسابك وكلمة المرور. أنت تتحمل المسؤولية الكاملة عن جميع الأنشطة التي تحدث تحت حسابك.</p>
+                
+                <h4>3. استخدام الموقع</h4>
+                <p>يسمح لك باستخدام الموقع لأغراض شخصية وغير تجارية فقط. لا يجوز لك استخدام الموقع بأي طريقة قد تضر أو تعطل الموقع أو تتعارض مع استخدام الآخرين.</p>
+                
+                <h4>4. البيانات الشخصية</h4>
+                <p>نحن نحترم خصوصيتك. يتم جمع وتخزين بياناتك الشخصية وفقاً لسياسة الخصوصية الخاصة بنا. يتم استخدام البيانات فقط لتحسين تجربتك في الموقع.</p>
+                
+                <h4>5. التحديثات</h4>
+                <p>نحتفظ بالحق في تحديث هذه الشروط والأحكام في أي وقت. سيتم إخطارك بأي تغييرات جوهرية عن طريق البريد الإلكتروني أو من خلال الموقع.</p>
+                
+                <h4>6. التواصل</h4>
+                <p>للتواصل معنا بخصوص أي استفسار أو شكوى، يمكنك استخدام صفحة <a href="contact.html">التواصل</a> أو إرسال بريد إلكتروني إلى: info@fittrack.com</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="agreeBtn">أوافق | I Agree</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
