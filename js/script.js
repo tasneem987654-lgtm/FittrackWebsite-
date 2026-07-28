@@ -1,11 +1,5 @@
-
 // ============================================
-// FitTrack - ملف JavaScript الرئيسي
-// جميع الصفحات
-// ============================================
-
-// ============================================
-// البيانات الوهمية (Mock Data)
+// FitTrack - ملف JavaScript الرئيسي (نسخة Live Server)
 // ============================================
 
 // بيانات التمارين
@@ -41,7 +35,7 @@ const mockWorkouts = [
         duration: '12 دقيقة',
         calories: 120,
         difficulty: 'easy',
-        description: 'لتقوية عضلات البطن وتحسين المظهر العام وتحسين الاستقامة'
+        description: 'لتقوية عضلات البطن وتحسين المظهر العام'
     },
     {
         id: 4,
@@ -63,7 +57,7 @@ const mockWorkouts = [
         duration: '15 دقيقة',
         calories: 180,
         difficulty: 'medium',
-        description: 'تمرين فعال لتقوية عضلات الأرجل والأرداف وتحسين التوازن'
+        description: 'تمرين فعال لتقوية عضلات الأرجل والأرداف'
     },
     {
         id: 6,
@@ -74,11 +68,11 @@ const mockWorkouts = [
         duration: '25 دقيقة',
         calories: 130,
         difficulty: 'easy',
-        description: 'تحسين المرونة والاسترخاء وتقليل التوتر والقلق'
+        description: 'تحسين المرونة والاسترخاء وتقليل التوتر'
     }
 ];
 
-// بيانات الأهداف الوهمية للتهيئة الأولية
+// بيانات الأهداف الافتراضية
 const defaultGoals = [
     {
         id: 1,
@@ -87,7 +81,7 @@ const defaultGoals = [
         duration: 30,
         targetCalories: 500,
         targetWeight: 70,
-        notes: 'ممارسة الكارديو 5 أيام في الأسبوع مع نظام غذائي صحي',
+        notes: 'ممارسة الكارديو 5 أيام في الأسبوع',
         status: 'قيد التنفيذ'
     },
     {
@@ -97,72 +91,92 @@ const defaultGoals = [
         duration: 60,
         targetCalories: 300,
         targetWeight: 75,
-        notes: 'تمارين المقاومة 4 أيام في الأسبوع مع بروتين إضافي',
+        notes: 'تمارين المقاومة 4 أيام في الأسبوع',
         status: 'مكتمل'
     }
 ];
 
+// بيانات المستخدمين الافتراضية
+const defaultUsers = [
+    {
+        id: 1,
+        fullName: 'Admin User',
+        username: 'admin',
+        email: 'admin@gmail.com',
+        password: '123456',
+        createdAt: new Date().toISOString()
+    }
+];
+
 // ============================================
-// دوال مساعدة (Helper Functions)
+// دوال مساعدة
 // ============================================
 
-/**
- * دالة التحقق من حالة تسجيل الدخول
- */
+function getUsers() {
+    const stored = localStorage.getItem('fitTrackUsers');
+    if (stored) return JSON.parse(stored);
+    localStorage.setItem('fitTrackUsers', JSON.stringify(defaultUsers));
+    return defaultUsers;
+}
+
+function saveUsers(users) {
+    localStorage.setItem('fitTrackUsers', JSON.stringify(users));
+}
+
+function getGoals() {
+    const stored = localStorage.getItem('fitTrackGoals');
+    if (stored) return JSON.parse(stored);
+    localStorage.setItem('fitTrackGoals', JSON.stringify(defaultGoals));
+    return defaultGoals;
+}
+
+function saveGoals(goals) {
+    localStorage.setItem('fitTrackGoals', JSON.stringify(goals));
+}
+
+function generateId() {
+    return Date.now() + Math.floor(Math.random() * 1000);
+}
+
 function checkAuth() {
     const currentUser = localStorage.getItem('fitTrackUser');
     const currentPage = window.location.pathname;
     
-    // إذا كان المستخدم غير مسجل ويحاول الوصول لصفحة غير login
-    if (!currentUser && !currentPage.includes('login.html')) {
+    if (!currentUser && !currentPage.includes('login.html') && !currentPage.includes('register.html')) {
         window.location.href = 'login.html';
         return false;
     }
     
-    // إذا كان المستخدم مسجل ويحاول الوصول لصفحة login
-    if (currentUser && currentPage.includes('login.html')) {
+    if (currentUser && (currentPage.includes('login.html') || currentPage.includes('register.html'))) {
         window.location.href = 'index.html';
         return false;
     }
-    
     return true;
 }
 
-/**
- * دالة تسجيل الخروج
- */
 function logoutUser() {
     localStorage.removeItem('fitTrackUser');
     window.location.href = 'login.html';
 }
 
-/**
- * دالة تهيئة زر تسجيل الخروج
- */
 function initLogoutButton() {
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            if (confirm('هل أنت متأكد من رغبتك في تسجيل الخروج؟ | Are you sure you want to logout?')) {
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
                 logoutUser();
             }
         });
     }
 }
 
-/**
- * دالة تهيئة قائمة التنقل للشاشات الصغيرة
- */
 function initNavToggle() {
     const toggleBtn = document.getElementById('navToggle');
     const navMenu = document.getElementById('navMenu');
-    
     if (toggleBtn && navMenu) {
         toggleBtn.addEventListener('click', function() {
             navMenu.classList.toggle('active');
-            
-            // تغيير شكل الأيقونة
             const spans = this.querySelectorAll('span');
             if (navMenu.classList.contains('active')) {
                 spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
@@ -177,68 +191,50 @@ function initNavToggle() {
     }
 }
 
-/**
- * دالة الحصول على الأهداف من Local Storage
- */
-function getGoals() {
-    const storedGoals = localStorage.getItem('fitTrackGoals');
-    if (storedGoals) {
-        return JSON.parse(storedGoals);
-    } else {
-        // تهيئة البيانات الافتراضية
-        localStorage.setItem('fitTrackGoals', JSON.stringify(defaultGoals));
-        return defaultGoals;
-    }
-}
-
-/**
- * دالة حفظ الأهداف في Local Storage
- */
-function saveGoals(goals) {
-    localStorage.setItem('fitTrackGoals', JSON.stringify(goals));
-}
-
-/**
- * دالة إنشاء ID فريد
- */
-function generateId() {
-    return Date.now() + Math.floor(Math.random() * 1000);
-}
-
 // ============================================
-// 1. صفحة تسجيل الدخول - login.html
+// 1. صفحة تسجيل الدخول
 // ============================================
 
 function initLoginPage() {
     const loginForm = document.getElementById('loginForm');
     if (!loginForm) return;
     
-    // التحقق من المصادقة
     checkAuth();
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('registered') === 'true') {
+        const errorMessage = document.getElementById('errorMessage');
+        if (errorMessage) {
+            errorMessage.textContent = '✅ تم إنشاء الحساب بنجاح! يمكنك تسجيل الدخول الآن';
+            errorMessage.style.color = '#28a745';
+        }
+    }
     
     loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
-        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value.trim();
         const errorMessage = document.getElementById('errorMessage');
         
-        // التحقق من الحقول الفارغة
-        if (!username || !password) {
-            errorMessage.textContent = '❌ الرجاء ملء جميع الحقول | Please fill all fields';
+        if (!email || !password) {
+            errorMessage.textContent = '❌ الرجاء ملء جميع الحقول';
             errorMessage.style.color = '#dc3545';
             return;
         }
         
-        // بيانات تسجيل الدخول الوهمية
-        const validUsername = 'admin';
-        const validPassword = 'admin123';
+        const users = getUsers();
+        const foundUser = users.find(user => 
+            user.email.toLowerCase() === email.toLowerCase() && 
+            user.password === password
+        );
         
-        // التحقق من صحة البيانات
-        if (username === validUsername && password === validPassword) {
-            // حفظ بيانات المستخدم في Local Storage
+        if (foundUser) {
             localStorage.setItem('fitTrackUser', JSON.stringify({
-                username: username,
+                id: foundUser.id,
+                username: foundUser.username,
+                fullName: foundUser.fullName,
+                email: foundUser.email,
                 loginTime: new Date().toISOString()
             }));
             
@@ -249,47 +245,30 @@ function initLoginPage() {
                 window.location.href = 'index.html';
             }, 1500);
         } else {
-            errorMessage.textContent = '❌ اسم المستخدم أو كلمة المرور غير صحيحة | Invalid credentials';
+            errorMessage.textContent = '❌ البريد الإلكتروني أو كلمة المرور غير صحيحة';
             errorMessage.style.color = '#dc3545';
             document.getElementById('password').value = '';
-            document.getElementById('password').focus();
         }
-    });
-    
-    // إعادة تعيين رسالة الخطأ عند الضغط على Reset
-    loginForm.addEventListener('reset', function() {
-        document.getElementById('errorMessage').textContent = '';
     });
 }
 
 // ============================================
-// 2. الصفحة الرئيسية - index.html
+// 2. الصفحة الرئيسية
 // ============================================
 
 function initHomePage() {
     if (!checkAuth()) return;
     
-    // عرض التمارين السريعة
     displayQuickWorkouts();
-    
-    // تحديث الإحصائيات
     updateStats();
-    
-    // تهيئة زر تسجيل الخروج
     initLogoutButton();
-    
-    // تهيئة قائمة التنقل
     initNavToggle();
 }
 
-/**
- * دالة عرض التمارين السريعة في الصفحة الرئيسية
- */
 function displayQuickWorkouts() {
     const container = document.getElementById('quickWorkouts');
     if (!container) return;
     
-    // عرض أول 3 تمارين فقط
     const workoutsToShow = mockWorkouts.slice(0, 3);
     
     container.innerHTML = workoutsToShow.map(workout => `
@@ -306,18 +285,14 @@ function displayQuickWorkouts() {
     `).join('');
 }
 
-/**
- * دالة تحديث الإحصائيات
- */
 function updateStats() {
     const workoutCount = document.getElementById('workoutCount');
-    if (workoutCount) {
-        workoutCount.textContent = mockWorkouts.length;
-    }
+    if (workoutCount) workoutCount.textContent = mockWorkouts.length;
     
     const userCount = document.getElementById('userCount');
     if (userCount) {
-        userCount.textContent = '1,247';
+        const users = getUsers();
+        userCount.textContent = users.length;
     }
     
     const goalCount = document.getElementById('goalCount');
@@ -334,20 +309,16 @@ function updateStats() {
 }
 
 // ============================================
-// 3. صفحة التمارين - workouts.html
+// 3. صفحة التمارين
 // ============================================
 
 function initWorkoutsPage() {
     if (!checkAuth()) return;
-    
     displayAllWorkouts();
     initLogoutButton();
     initNavToggle();
 }
 
-/**
- * دالة عرض جميع التمارين
- */
 function displayAllWorkouts() {
     const container = document.getElementById('workoutsGrid');
     if (!container) return;
@@ -366,19 +337,16 @@ function displayAllWorkouts() {
             </div>
             <p class="workout-description">${workout.description}</p>
             <button class="btn btn-primary" onclick="viewWorkoutDetails(${workout.id})">
-                📋 عرض التفاصيل | View Details
+                📋 عرض التفاصيل
             </button>
         </div>
     `).join('');
 }
 
-/**
- * دالة عرض تفاصيل التمرين
- */
 function viewWorkoutDetails(id) {
     const workout = mockWorkouts.find(w => w.id === id);
     if (workout) {
-        alert(`📋 تفاصيل التمرين | Workout Details\n\n` +
+        alert(`📋 تفاصيل التمرين\n\n` +
               `اسم التمرين: ${workout.name} (${workout.nameEn})\n` +
               `النوع: ${workout.type} | ${workout.typeEn}\n` +
               `المدة: ${workout.duration}\n` +
@@ -389,7 +357,7 @@ function viewWorkoutDetails(id) {
 }
 
 // ============================================
-// 4. صفحة إضافة الهدف - add-goal.html
+// 4. صفحة إضافة الهدف
 // ============================================
 
 function initAddGoalPage() {
@@ -407,11 +375,7 @@ function initAddGoalPage() {
     });
 }
 
-/**
- * دالة إضافة هدف جديد
- */
 function addNewGoal() {
-    // الحصول على القيم من النموذج
     const goalName = document.getElementById('goalName').value.trim();
     const activityType = document.getElementById('activityType').value;
     const duration = parseInt(document.getElementById('duration').value);
@@ -422,20 +386,12 @@ function addNewGoal() {
     
     const messageDiv = document.getElementById('formMessage');
     
-    // التحقق من صحة الحقول
     if (!goalName || !activityType || !duration || !targetCalories || !targetWeight) {
         messageDiv.className = 'form-message error';
-        messageDiv.textContent = '❌ الرجاء ملء جميع الحقول المطلوبة | Please fill all required fields';
+        messageDiv.textContent = '❌ الرجاء ملء جميع الحقول المطلوبة';
         return;
     }
     
-    if (duration <= 0 || targetCalories <= 0 || targetWeight <= 0) {
-        messageDiv.className = 'form-message error';
-        messageDiv.textContent = '❌ الرجاء إدخال قيم صحيحة (أكبر من صفر) | Please enter valid values (greater than zero)';
-        return;
-    }
-    
-    // إنشاء كائن الهدف الجديد
     const newGoal = {
         id: generateId(),
         goalName: goalName,
@@ -447,19 +403,14 @@ function addNewGoal() {
         status: status
     };
     
-    // حفظ الهدف في Local Storage
     const goals = getGoals();
     goals.push(newGoal);
     saveGoals(goals);
     
-    // عرض رسالة نجاح
     messageDiv.className = 'form-message success';
-    messageDiv.textContent = '✅ تم إضافة الهدف بنجاح! | Goal added successfully!';
-    
-    // إعادة تعيين النموذج
+    messageDiv.textContent = '✅ تم إضافة الهدف بنجاح!';
     document.getElementById('goalForm').reset();
     
-    // إخفاء الرسالة بعد 3 ثواني
     setTimeout(() => {
         messageDiv.className = 'form-message';
         messageDiv.textContent = '';
@@ -467,30 +418,23 @@ function addNewGoal() {
 }
 
 // ============================================
-// 5. صفحة إدارة الأهداف - manage.html
+// 5. صفحة إدارة الأهداف
 // ============================================
-
-let currentEditId = null;
 
 function initManagePage() {
     if (!checkAuth()) return;
-    
     renderGoalsTable();
     initLogoutButton();
     initNavToggle();
     initSearch();
 }
 
-/**
- * دالة عرض الأهداف في الجدول
- */
-function renderGoalsTable(filteredGoals = null) {
+function renderGoalsTable() {
     const tbody = document.getElementById('goalsTableBody');
     const noMessage = document.getElementById('noGoalsMessage');
-    
     if (!tbody) return;
     
-    const goals = filteredGoals || getGoals();
+    const goals = getGoals();
     
     if (goals.length === 0) {
         tbody.innerHTML = '';
@@ -524,43 +468,24 @@ function renderGoalsTable(filteredGoals = null) {
     `).join('');
 }
 
-/**
- * دالة حذف هدف
- */
 function deleteGoal(id) {
-    if (!confirm('هل أنت متأكد من حذف هذا الهدف؟ | Are you sure you want to delete this goal?')) {
-        return;
-    }
+    if (!confirm('هل أنت متأكد من حذف هذا الهدف؟')) return;
     
     let goals = getGoals();
     goals = goals.filter(goal => goal.id !== id);
     saveGoals(goals);
     renderGoalsTable();
-    
-    // عرض رسالة نجاح
-    showTemporaryMessage('✅ تم حذف الهدف بنجاح | Goal deleted successfully');
 }
 
-/**
- * دالة تعديل هدف (تحويل الصف إلى نموذج تعديل)
- */
 function editGoal(id) {
+    window.location.href = `add-goal.html?edit=${id}`;
     const goals = getGoals();
     const goal = goals.find(g => g.id === id);
-    if (!goal) return;
-    
-    currentEditId = id;
-    
-    // ملء النموذج في صفحة الإضافة
-    window.location.href = `add-goal.html?edit=${id}`;
-    
-    // تخزين الهدف للتعديل
-    localStorage.setItem('editGoalData', JSON.stringify(goal));
+    if (goal) {
+        localStorage.setItem('editGoalData', JSON.stringify(goal));
+    }
 }
 
-/**
- * دالة تهيئة صفحة الإضافة مع وضع التعديل
- */
 function initEditMode() {
     const editData = localStorage.getItem('editGoalData');
     if (!editData) return;
@@ -570,7 +495,6 @@ function initEditMode() {
     const editId = urlParams.get('edit');
     
     if (editId && document.getElementById('goalForm')) {
-        // ملء الحقول بالبيانات
         document.getElementById('goalName').value = goal.goalName;
         document.getElementById('activityType').value = goal.activityType;
         document.getElementById('duration').value = goal.duration;
@@ -579,13 +503,11 @@ function initEditMode() {
         document.getElementById('goalStatus').value = goal.status;
         document.getElementById('notes').value = goal.notes;
         
-        // تغيير زر الإرسال
         const submitBtn = document.querySelector('#goalForm button[type="submit"]');
         if (submitBtn) {
-            submitBtn.textContent = '💾 تحديث الهدف | Update Goal';
+            submitBtn.textContent = '💾 تحديث الهدف';
         }
         
-        // تعديل حدث الإرسال
         const goalForm = document.getElementById('goalForm');
         goalForm.removeEventListener('submit', addNewGoal);
         goalForm.addEventListener('submit', function(e) {
@@ -593,21 +515,15 @@ function initEditMode() {
             updateGoal(parseInt(editId));
         });
         
-        // مسح بيانات التعديل المؤقتة
         localStorage.removeItem('editGoalData');
     }
 }
 
-/**
- * دالة تحديث هدف
- */
 function updateGoal(id) {
     const goals = getGoals();
     const goalIndex = goals.findIndex(g => g.id === id);
-    
     if (goalIndex === -1) return;
     
-    // الحصول على القيم الجديدة
     const goalName = document.getElementById('goalName').value.trim();
     const activityType = document.getElementById('activityType').value;
     const duration = parseInt(document.getElementById('duration').value);
@@ -618,14 +534,12 @@ function updateGoal(id) {
     
     const messageDiv = document.getElementById('formMessage');
     
-    // التحقق من صحة الحقول
     if (!goalName || !activityType || !duration || !targetCalories || !targetWeight) {
         messageDiv.className = 'form-message error';
-        messageDiv.textContent = '❌ الرجاء ملء جميع الحقول المطلوبة | Please fill all required fields';
+        messageDiv.textContent = '❌ الرجاء ملء جميع الحقول المطلوبة';
         return;
     }
     
-    // تحديث الهدف
     goals[goalIndex] = {
         ...goals[goalIndex],
         goalName: goalName,
@@ -638,72 +552,108 @@ function updateGoal(id) {
     };
     
     saveGoals(goals);
-    
-    // عرض رسالة نجاح
     messageDiv.className = 'form-message success';
-    messageDiv.textContent = '✅ تم تحديث الهدف بنجاح! | Goal updated successfully!';
+    messageDiv.textContent = '✅ تم تحديث الهدف بنجاح!';
     
-    // إعادة تعيين النموذج والعودة للإدارة
     setTimeout(() => {
         window.location.href = 'manage.html';
     }, 1500);
 }
 
-/**
- * دالة عرض رسالة مؤقتة
- */
-function showTemporaryMessage(message) {
-    const messageDiv = document.getElementById('formMessage');
-    if (messageDiv) {
-        messageDiv.className = 'form-message success';
-        messageDiv.textContent = message;
-        setTimeout(() => {
-            messageDiv.className = 'form-message';
-            messageDiv.textContent = '';
-        }, 3000);
-    } else {
-        alert(message);
-    }
-}
-
-/**
- * دالة البحث في الأهداف
- */
 function initSearch() {
     const searchInput = document.getElementById('searchInput');
     if (!searchInput) return;
     
     searchInput.addEventListener('input', function() {
         const searchTerm = this.value.trim().toLowerCase();
+        const goals = getGoals();
         
         if (!searchTerm) {
             renderGoalsTable();
             return;
         }
         
-        const goals = getGoals();
         const filtered = goals.filter(goal => 
             goal.goalName.toLowerCase().includes(searchTerm) ||
             goal.activityType.toLowerCase().includes(searchTerm) ||
             goal.status.toLowerCase().includes(searchTerm)
         );
         
-        renderGoalsTable(filtered);
+        const tbody = document.getElementById('goalsTableBody');
+        if (!tbody) return;
+        
+        if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">❌ لا توجد نتائج</td></tr>';
+            return;
+        }
+        
+        tbody.innerHTML = filtered.map((goal, index) => `
+            <tr>
+                <td>${index + 1}</td>
+                <td><strong>${goal.goalName}</strong></td>
+                <td>${goal.activityType}</td>
+                <td>${goal.duration} يوم</td>
+                <td>${goal.targetCalories}</td>
+                <td>${goal.targetWeight} كجم</td>
+                <td>
+                    <span class="status-badge status-${goal.status === 'قيد التنفيذ' ? 'in-progress' : 
+                                                       goal.status === 'مكتمل' ? 'completed' : 'pending'}">
+                        ${goal.status}
+                    </span>
+                </td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn btn-warning" onclick="editGoal(${goal.id})">✏️ تعديل</button>
+                        <button class="btn btn-danger" onclick="deleteGoal(${goal.id})">🗑️ حذف</button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
     });
 }
 
 // ============================================
-// 6. صفحة التواصل - contact.html
+// 6. صفحة التواصل
 // ============================================
 
 function initContactPage() {
     if (!checkAuth()) return;
-    
     initLogoutButton();
     initNavToggle();
     
     const contactForm = document.getElementById('contactForm');
     if (!contactForm) return;
+    
+    // ✅ جلب بيانات المستخدم وعرضها في الفورم
+    const user = localStorage.getItem('fitTrackUser');
+    if (user) {
+        const userData = JSON.parse(user);
+        const nameInput = document.getElementById('contactName');
+        const emailInput = document.getElementById('contactEmail');
+        
+        if (nameInput && userData.fullName) {
+            nameInput.value = userData.fullName;
+            nameInput.readOnly = true;
+        }
+        
+        if (emailInput && userData.email) {
+            emailInput.value = userData.email;
+            emailInput.readOnly = true;
+        }
+    }
+    
+    // ✅ عرض رسالة الترحيب
+    const welcomeText = document.getElementById('welcomeText');
+    const userInfo = document.getElementById('userInfo');
+    if (user) {
+        const userData = JSON.parse(user);
+        if (welcomeText) {
+            welcomeText.innerHTML = `👋 مرحباً بك، ${userData.fullName || 'صديقنا'}`;
+        }
+        if (userInfo) {
+            userInfo.innerHTML = `📧 ${userData.email || ''} | نرحب بكم في صفحة التواصل مع فريق FitTrack`;
+        }
+    }
     
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
@@ -714,21 +664,30 @@ function initContactPage() {
         const message = document.getElementById('contactMessage').value.trim();
         const alertDiv = document.getElementById('contactMessageAlert');
         
-        // التحقق من الحقول
         if (!name || !email || !phone || !message) {
             alertDiv.className = 'form-message error';
-            alertDiv.textContent = '❌ الرجاء ملء جميع الحقول | Please fill all fields';
+            alertDiv.textContent = '❌ الرجاء ملء جميع الحقول';
             return;
         }
         
-        // عرض رسالة نجاح
+        // ✅ حفظ الرسالة في Local Storage
+        const messages = JSON.parse(localStorage.getItem('fitTrackMessages') || '[]');
+        messages.push({
+            id: generateId(),
+            name: name,
+            email: email,
+            phone: phone,
+            message: message,
+            createdAt: new Date().toISOString()
+        });
+        localStorage.setItem('fitTrackMessages', JSON.stringify(messages));
+        
         alertDiv.className = 'form-message success';
-        alertDiv.textContent = '✅ تم إرسال رسالتك بنجاح! شكراً لتواصلك معنا | Message sent successfully!';
+        alertDiv.textContent = '✅ تم إرسال رسالتك بنجاح! شكراً لتواصلك معنا';
         
-        // إعادة تعيين النموذج
-        this.reset();
+        document.getElementById('contactPhone').value = '';
+        document.getElementById('contactMessage').value = '';
         
-        // إخفاء الرسالة بعد 3 ثواني
         setTimeout(() => {
             alertDiv.className = 'form-message';
             alertDiv.textContent = '';
@@ -737,15 +696,172 @@ function initContactPage() {
 }
 
 // ============================================
-// تهيئة الصفحات حسب اسم الملف
+// 7. صفحة إنشاء حساب
+// ============================================
+
+function initRegisterPage() {
+    const registerForm = document.getElementById('registerForm');
+    if (!registerForm) return;
+
+    const currentUser = localStorage.getItem('fitTrackUser');
+    if (currentUser) {
+        window.location.href = 'index.html';
+        return;
+    }
+
+    initTermsModal();
+
+    registerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleRegister();
+    });
+
+    registerForm.addEventListener('reset', function() {
+        document.getElementById('registerError').textContent = '';
+    });
+}
+
+function handleRegister() {
+    const fullName = document.getElementById('fullName').value.trim();
+    const username = document.getElementById('regUsername').value.trim();
+    const email = document.getElementById('regEmail').value.trim();
+    const password = document.getElementById('regPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const agreeTerms = document.getElementById('agreeTerms').checked;
+    const errorDiv = document.getElementById('registerError');
+
+    if (!fullName || !username || !email || !password || !confirmPassword) {
+        errorDiv.textContent = '❌ الرجاء ملء جميع الحقول';
+        errorDiv.style.color = '#dc3545';
+        return;
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        errorDiv.textContent = '❌ البريد الإلكتروني غير صحيح';
+        errorDiv.style.color = '#dc3545';
+        return;
+    }
+
+    if (username.includes(' ')) {
+        errorDiv.textContent = '❌ اسم المستخدم لا يجب أن يحتوي على مسافات';
+        errorDiv.style.color = '#dc3545';
+        return;
+    }
+
+    if (password.length < 6) {
+        errorDiv.textContent = '❌ كلمة المرور يجب أن تحتوي على 6 أحرف على الأقل';
+        errorDiv.style.color = '#dc3545';
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        errorDiv.textContent = '❌ كلمة المرور غير متطابقة';
+        errorDiv.style.color = '#dc3545';
+        return;
+    }
+
+    if (!agreeTerms) {
+        errorDiv.textContent = '❌ يجب الموافقة على الشروط والأحكام';
+        errorDiv.style.color = '#dc3545';
+        return;
+    }
+
+    const users = getUsers();
+    if (users.some(user => user.username.toLowerCase() === username.toLowerCase())) {
+        errorDiv.textContent = '❌ اسم المستخدم موجود بالفعل';
+        errorDiv.style.color = '#dc3545';
+        return;
+    }
+
+    if (users.some(user => user.email.toLowerCase() === email.toLowerCase())) {
+        errorDiv.textContent = '❌ البريد الإلكتروني موجود بالفعل';
+        errorDiv.style.color = '#dc3545';
+        return;
+    }
+
+    const newUser = {
+        id: generateId(),
+        fullName: fullName,
+        username: username,
+        email: email,
+        password: password,
+        createdAt: new Date().toISOString()
+    };
+
+    users.push(newUser);
+    saveUsers(users);
+
+    errorDiv.textContent = '✅ تم إنشاء الحساب بنجاح! جاري تحويلك لتسجيل الدخول...';
+    errorDiv.style.color = '#28a745';
+
+    setTimeout(function() {
+        window.location.href = 'login.html?registered=true';
+    }, 2000);
+}
+
+// ============================================
+// نافذة الشروط والأحكام
+// ============================================
+
+function initTermsModal() {
+    const modal = document.getElementById('termsModal');
+    const termsLink = document.getElementById('termsLink');
+    const termsLinkEn = document.getElementById('termsLinkEn');
+    const closeBtn = document.querySelector('.modal-close');
+    const agreeBtn = document.getElementById('agreeBtn');
+    const checkbox = document.getElementById('agreeTerms');
+
+    function openModal(e) {
+        if (e) e.preventDefault();
+        if (modal) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeModal() {
+        if (modal) {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    if (termsLink) termsLink.addEventListener('click', openModal);
+    if (termsLinkEn) termsLinkEn.addEventListener('click', openModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+    if (agreeBtn) {
+        agreeBtn.addEventListener('click', function() {
+            if (checkbox) checkbox.checked = true;
+            closeModal();
+        });
+    }
+
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+}
+
+// ============================================
+// تهيئة الصفحات
 // ============================================
 
 document.addEventListener('DOMContentLoaded', function() {
     const currentPage = window.location.pathname;
     
-    // تحديد الصفحة الحالية وتشغيل الدالة المناسبة
     if (currentPage.includes('login.html')) {
         initLoginPage();
+    } else if (currentPage.includes('register.html')) {
+        initRegisterPage();
     } else if (currentPage.includes('index.html') || 
                currentPage.endsWith('/') || 
                currentPage === '' || 
@@ -755,7 +871,6 @@ document.addEventListener('DOMContentLoaded', function() {
         initWorkoutsPage();
     } else if (currentPage.includes('add-goal.html')) {
         initAddGoalPage();
-        // التحقق من وجود وضع التعديل
         setTimeout(initEditMode, 100);
     } else if (currentPage.includes('manage.html')) {
         initManagePage();
@@ -764,11 +879,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// ============================================
-// دوال عامة للاستخدام في HTML (onclick)
-// ============================================
-
-// جعل الدوال عامة للاستخدام في onclick
+// دوال عامة
 window.viewWorkoutDetails = viewWorkoutDetails;
 window.deleteGoal = deleteGoal;
 window.editGoal = editGoal;
